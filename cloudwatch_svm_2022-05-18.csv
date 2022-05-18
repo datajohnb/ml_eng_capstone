@@ -1,0 +1,95 @@
+timestamp,message
+1.65286E+12,"2022-05-18 08:45:53,033 INFO - sagemaker-containers - No GPUs detected (normal if no gpus installed)"
+1.65286E+12,"2022-05-18 08:45:53,035 INFO - sagemaker-containers - No GPUs detected (normal if no gpus installed)"
+1.65286E+12,"2022-05-18 08:45:53,036 INFO - sagemaker-containers - nginx config: "
+1.65286E+12,worker_processes auto;
+1.65286E+12,daemon off;
+1.65286E+12,pid /tmp/nginx.pid;
+1.65286E+12,error_log  /dev/stderr;
+1.65286E+12,worker_rlimit_nofile 4096;
+1.65286E+12,"events {
+  worker_connections 2048;"
+1.65286E+12,}
+1.65286E+12,"http {
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
+  access_log /dev/stdout combined;
+  upstream gunicorn {
+    server unix:/tmp/gunicorn.sock;
+  }
+  server {
+    listen 8080 deferred;
+    client_max_body_size 0;
+    keepalive_timeout 3;
+    location ~ ^/(ping|invocations|execution-parameters) {
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_redirect off;
+      proxy_read_timeout 60s;
+      proxy_pass http://gunicorn;
+    }
+    location / {
+      return 404 ""{}"";
+    }
+  }"
+1.65286E+12,}
+1.65286E+12,"2022-05-18 08:45:53,260 INFO - sagemaker-containers - Module train_svm does not provide a setup.py. "
+1.65286E+12,Generating setup.py
+1.65286E+12,"2022-05-18 08:45:53,260 INFO - sagemaker-containers - Generating setup.cfg"
+1.65286E+12,"2022-05-18 08:45:53,260 INFO - sagemaker-containers - Generating MANIFEST.in"
+1.65286E+12,"2022-05-18 08:45:53,261 INFO - sagemaker-containers - Installing module with the following command:"
+1.65286E+12,/miniconda3/bin/python3 -m pip install . 
+1.65286E+12,"Processing /opt/ml/code
+  Preparing metadata (setup.py): started
+  Preparing metadata (setup.py): finished with status 'done'"
+1.65286E+12,"Building wheels for collected packages: train-svm
+  Building wheel for train-svm (setup.py): started
+  Building wheel for train-svm (setup.py): finished with status 'done'
+  Created wheel for train-svm: filename=train_svm-1.0.0-py2.py3-none-any.whl size=6617 sha256=e3f4baf143d47d9e118f48a5ed2ac21b7dae97885da303348d8176656d5c01bb
+  Stored in directory: /home/model-server/tmp/pip-ephem-wheel-cache-c_7mlmlg/wheels/3e/0f/51/2f1df833dd0412c1bc2f5ee56baac195b5be563353d111dca6"
+1.65286E+12,Successfully built train-svm
+1.65286E+12,Installing collected packages: train-svm
+1.65286E+12,Successfully installed train-svm-1.0.0
+1.65286E+12,WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+1.65286E+12,"WARNING: You are using pip version 22.0.4; however, version 22.1 is available."
+1.65286E+12,You should consider upgrading via the '/miniconda3/bin/python3 -m pip install --upgrade pip' command.
+1.65286E+12,[2022-05-18 08:45:56 +0000] [38] [INFO] Starting gunicorn 20.0.4
+1.65286E+12,[2022-05-18 08:45:56 +0000] [38] [INFO] Listening at: unix:/tmp/gunicorn.sock (38)
+1.65286E+12,[2022-05-18 08:45:56 +0000] [38] [INFO] Using worker: gevent
+1.65286E+12,[2022-05-18 08:45:56 +0000] [41] [INFO] Booting worker with pid: 41
+1.65286E+12,[2022-05-18 08:45:56 +0000] [42] [INFO] Booting worker with pid: 42
+1.65286E+12,[2022-05-18 08:45:56 +0000] [43] [INFO] Booting worker with pid: 43
+1.65286E+12,[2022-05-18 08:45:56 +0000] [44] [INFO] Booting worker with pid: 44
+1.65286E+12,"2022-05-18 08:45:59,444 INFO - sagemaker-containers - No GPUs detected (normal if no gpus installed)"
+1.65286E+12,Loading model.
+1.65286E+12,Done loading model.
+1.65286E+12,"169.254.255.130 - - [18/May/2022:08:46:00 +0000] ""GET /ping HTTP/1.1"" 200 0 ""-"" ""Go-http-client/1.1"""
+1.65286E+12,"2022-05-18 08:46:00,118 INFO - sagemaker-containers - No GPUs detected (normal if no gpus installed)"
+1.65286E+12,Loading model.
+1.65286E+12,Done loading model.
+1.65286E+12,"169.254.255.130 - - [18/May/2022:08:46:00 +0000] ""GET /execution-parameters HTTP/1.1"" 404 232 ""-"" ""Go-http-client/1.1"""
+1.65286E+12,"2022-05-18 08:46:00,902 INFO - sagemaker-containers - No GPUs detected (normal if no gpus installed)"
+1.65286E+12,Loading model.
+1.65286E+12,Done loading model.
+1.65286E+12,[2022-05-18 08:47:00 +0000] [38] [CRITICAL] WORKER TIMEOUT (pid:41)
+1.65286E+12,"169.254.255.130 - - [18/May/2022:08:47:01 +0000] ""POST /invocations HTTP/1.1"" 502 182 ""-"" ""Go-http-client/1.1"""
+1.65286E+12,"2022/05/18 08:47:01 [error] 17#17: *4 upstream prematurely closed connection while reading response header from upstream, client: 169.254.255.130, server: , request: ""POST /invocations HTTP/1.1"", upstream: ""http://unix:/tmp/gunicorn.sock:/invocations"", host: ""169.254.255.131:8080"""
+1.65286E+12,[2022-05-18 08:47:01 +0000] [73] [INFO] Booting worker with pid: 73
+1.65286E+12,"2022-05-18 08:47:01,602 INFO - sagemaker-containers - No GPUs detected (normal if no gpus installed)"
+1.65286E+12,Loading model.
+1.65286E+12,Done loading model.
+1.65286E+12,[2022-05-18 08:48:01 +0000] [38] [CRITICAL] WORKER TIMEOUT (pid:43)
+1.65286E+12,"2022/05/18 08:48:02 [error] 17#17: *4 upstream timed out (110: Connection timed out) while reading response header from upstream, client: 169.254.255.130, server: , request: ""POST /invocations HTTP/1.1"", upstream: ""http://unix:/tmp/gunicorn.sock/invocations"", host: ""169.254.255.131:8080"""
+1.65286E+12,"169.254.255.130 - - [18/May/2022:08:48:02 +0000] ""POST /invocations HTTP/1.1"" 504 192 ""-"" ""Go-http-client/1.1"""
+1.65286E+12,[2022-05-18 08:48:02 +0000] [82] [INFO] Booting worker with pid: 82
+1.65286E+12,"2022/05/18 08:49:02 [error] 17#17: *4 upstream timed out (110: Connection timed out) while reading response header from upstream, client: 169.254.255.130, server: , request: ""POST /invocations HTTP/1.1"", upstream: ""http://unix:/tmp/gunicorn.sock/invocations"", host: ""169.254.255.131:8080"""
+1.65286E+12,"169.254.255.130 - - [18/May/2022:08:49:02 +0000] ""POST /invocations HTTP/1.1"" 504 192 ""-"" ""Go-http-client/1.1"""
+1.65286E+12,"2022-05-18 08:49:02,498 INFO - sagemaker-containers - No GPUs detected (normal if no gpus installed)"
+1.65286E+12,[2022-05-18 08:49:02 +0000] [38] [CRITICAL] WORKER TIMEOUT (pid:44)
+1.65286E+12,Loading model.
+1.65286E+12,Done loading model.
+1.65286E+12,[2022-05-18 08:49:03 +0000] [91] [INFO] Booting worker with pid: 91
+1.65286E+12,[2022-05-18 08:50:02 +0000] [38] [CRITICAL] WORKER TIMEOUT (pid:73)
+1.65286E+12,"2022/05/18 08:50:03 [error] 17#17: *4 upstream timed out (110: Connection timed out) while reading response header from upstream, client: 169.254.255.130, server: , request: ""POST /invocations HTTP/1.1"", upstream: ""http://unix:/tmp/gunicorn.sock/invocations"", host: ""169.254.255.131:8080"""
+1.65286E+12,"169.254.255.130 - - [18/May/2022:08:50:03 +0000] ""POST /invocations HTTP/1.1"" 504 192 ""-"" ""Go-http-client/1.1"""
+1.65286E+12,[2022-05-18 08:50:03 +0000] [96] [INFO] Booting worker with pid: 96
